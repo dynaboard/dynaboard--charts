@@ -1,14 +1,11 @@
-runtimeVersion: 0.2.14
+runtimeVersion: 0.3.0
 name: Charts
 description: Chart node usage examples
 type: com.dynaboard/project
 nodes:
   ROOT_NODE:
-    id: ROOT_NODE
     type: ROOT_NODE
     name: ROOT_NODE
-    parentNodeID: ROOT_NODE
-    parentSlot: ROOT_NODE
     slots:
       resources:
         - nodeID: 3db1136c-7787-4622-9ae1-415de88ceef2
@@ -30,88 +27,9 @@ nodes:
       robotsTxt: '{{ JSON.parse(''null'') }}'
       timezone: America
       languages: []
-  f13c5b2a-d767-4f53-85a5-0ade977a6af9:
-    id: f13c5b2a-d767-4f53-85a5-0ade977a6af9
-    type: RESOURCE/HTTP
-    name: coingeckoAPI
-    parentNodeID: ROOT_NODE
-    parentSlot: resources
-    properties:
-      baseURL: https://api.coingecko.com/api/v3/
-      method: GET
-      headers: []
-      bodyType: application/json
-      path: ''
-  de7d111f-c668-44d1-9669-b4bcd1edae82:
-    id: de7d111f-c668-44d1-9669-b4bcd1edae82
-    type: PAGE
-    name: index
-    parentNodeID: ROOT_NODE
-    parentSlot: pages
-    slots:
-      canvas:
-        - nodeID: 369e8f70-8152-4f56-b372-2d7a0ad1fef0
-          orderKey: a1
-        - nodeID: 48afa67d-8b4d-4c20-a4a0-994ff7b734e9
-          orderKey: a2
-        - nodeID: ca46183a-20ce-438d-8ada-1ed1b4d2526f
-          orderKey: a2V
-        - nodeID: 7c907d8f-53f8-4454-af2e-a63df9aac41e
-          orderKey: a3
-      functions:
-        - nodeID: 9f11e4da-7767-4f1d-aabb-1ef9d06572e7
-          orderKey: a0
-        - nodeID: db5bc295-2767-4324-a37f-8a55905c4163
-          orderKey: a2
-    properties:
-      gridColumnGap: '16'
-  48afa67d-8b4d-4c20-a4a0-994ff7b734e9:
-    id: 48afa67d-8b4d-4c20-a4a0-994ff7b734e9
-    type: BUTTON
-    name: basicChartsButton
-    parentNodeID: de7d111f-c668-44d1-9669-b4bcd1edae82
-    parentSlot: canvas
-    properties:
-      top: '13'
-      left: '4'
-      width: '3'
-      height: '5'
-      text: basic chart
-      leftIcon: ''
-      rightIcon: ''
-      fontSize: 2xl
-      backgroundColor: purple.300
-      onClick:
-        function:
-          ref: db5bc295-2767-4324-a37f-8a55905c4163
-  db5bc295-2767-4324-a37f-8a55905c4163:
-    id: db5bc295-2767-4324-a37f-8a55905c4163
-    type: FUNCTION
-    name: linkToBasicChart
-    parentNodeID: de7d111f-c668-44d1-9669-b4bcd1edae82
-    parentSlot: functions
-    properties:
-      action:
-        path: /basicChart
-        target: _self
-        targetNode:
-          ref: 3db1136c-7787-4622-9ae1-415de88ceef2
-        actionType: NAVIGATE_TO_PAGE
-      onSuccess: ''
-      onFailure: ''
-  3db1136c-7787-4622-9ae1-415de88ceef2:
-    id: 3db1136c-7787-4622-9ae1-415de88ceef2
-    type: RESOURCE/BROWSER
-    name: internalLink
-    parentNodeID: ROOT_NODE
-    parentSlot: resources
-    properties: {}
   369e8f70-8152-4f56-b372-2d7a0ad1fef0:
-    id: 369e8f70-8152-4f56-b372-2d7a0ad1fef0
     type: BUTTON
     name: coingeckoChartButton
-    parentNodeID: de7d111f-c668-44d1-9669-b4bcd1edae82
-    parentSlot: canvas
     properties:
       top: '13'
       left: '7'
@@ -125,23 +43,51 @@ nodes:
       onClick:
         function:
           ref: 9f11e4da-7767-4f1d-aabb-1ef9d06572e7
-  dbec5046-2d2b-4c0f-a28e-fc03c07b5f0c:
-    id: dbec5046-2d2b-4c0f-a28e-fc03c07b5f0c
+  3db1136c-7787-4622-9ae1-415de88ceef2:
+    type: RESOURCE/BROWSER
+    name: internalLink
+  48afa67d-8b4d-4c20-a4a0-994ff7b734e9:
+    type: BUTTON
+    name: basicChartsButton
+    properties:
+      top: '13'
+      left: '4'
+      width: '3'
+      height: '5'
+      text: basic chart
+      leftIcon: ''
+      rightIcon: ''
+      fontSize: 2xl
+      backgroundColor: purple.300
+      onClick:
+        function:
+          ref: db5bc295-2767-4324-a37f-8a55905c4163
+  4bcf5507-5e0e-4570-a4c1-b4b819f35624:
     type: PAGE
-    name: basicChart
-    parentNodeID: ROOT_NODE
-    parentSlot: pages
+    name: coingeckoTrendingCoinsChart
     slots:
       canvas:
-        - nodeID: 817fd7d0-615a-410a-b3b5-34691ac615d5
+        - nodeID: f4e0ef11-7e8a-4d85-ba8a-a8b837a91770
           orderKey: a0
-    properties: {}
+      functions:
+        - nodeID: e7cc432e-d22e-4ff4-b450-49d6618fb8d6
+          orderKey: a0
+  7c907d8f-53f8-4454-af2e-a63df9aac41e:
+    type: TEXT
+    name: title
+    properties:
+      top: '5'
+      left: '4'
+      width: '3'
+      height: '3'
+      overflow: auto
+      value: Charts
+      fontSize: 4xl
+      verticalAlign: center
+      fontWeight: bold
   817fd7d0-615a-410a-b3b5-34691ac615d5:
-    id: 817fd7d0-615a-410a-b3b5-34691ac615d5
     type: CHART
     name: basicChart
-    parentNodeID: dbec5046-2d2b-4c0f-a28e-fc03c07b5f0c
-    parentSlot: canvas
     properties:
       width: '12'
       height: '32'
@@ -246,26 +192,100 @@ nodes:
       chartOrientation: v
       traceName: trace 1 name
       yAxis2Type: '-'
-  4bcf5507-5e0e-4570-a4c1-b4b819f35624:
-    id: 4bcf5507-5e0e-4570-a4c1-b4b819f35624
+  9f11e4da-7767-4f1d-aabb-1ef9d06572e7:
+    type: FUNCTION
+    name: linkToCoingeckoChart
+    properties:
+      action:
+        path: /coingeckoTrendingCoinsChart
+        target: _self
+        targetNode:
+          ref: 3db1136c-7787-4622-9ae1-415de88ceef2
+        actionType: NAVIGATE_TO_PAGE
+      onSuccess: ''
+      onFailure: ''
+  ca46183a-20ce-438d-8ada-1ed1b4d2526f:
+    type: TEXT
+    name: desc
+    properties:
+      top: '8'
+      left: '4'
+      width: '6'
+      height: '4'
+      overflow: auto
+      value: >-
+        A powerful and flexible way to visualize your data. Connect to your data
+        source and customize the chart types (line, bar, scatters, etc.)
+      renderMode: markdown
+      verticalAlign: center
+      fontWeight: '500'
+  db5bc295-2767-4324-a37f-8a55905c4163:
+    type: FUNCTION
+    name: linkToBasicChart
+    properties:
+      action:
+        path: /basicChart
+        target: _self
+        targetNode:
+          ref: 3db1136c-7787-4622-9ae1-415de88ceef2
+        actionType: NAVIGATE_TO_PAGE
+      onSuccess: ''
+      onFailure: ''
+  dbec5046-2d2b-4c0f-a28e-fc03c07b5f0c:
     type: PAGE
-    name: coingeckoTrendingCoinsChart
-    parentNodeID: ROOT_NODE
-    parentSlot: pages
+    name: basicChart
     slots:
       canvas:
-        - nodeID: f4e0ef11-7e8a-4d85-ba8a-a8b837a91770
+        - nodeID: 817fd7d0-615a-410a-b3b5-34691ac615d5
           orderKey: a0
+  de7d111f-c668-44d1-9669-b4bcd1edae82:
+    type: PAGE
+    name: index
+    slots:
+      canvas:
+        - nodeID: 369e8f70-8152-4f56-b372-2d7a0ad1fef0
+          orderKey: a1
+        - nodeID: 48afa67d-8b4d-4c20-a4a0-994ff7b734e9
+          orderKey: a2
+        - nodeID: ca46183a-20ce-438d-8ada-1ed1b4d2526f
+          orderKey: a2V
+        - nodeID: 7c907d8f-53f8-4454-af2e-a63df9aac41e
+          orderKey: a3
       functions:
-        - nodeID: e7cc432e-d22e-4ff4-b450-49d6618fb8d6
+        - nodeID: 9f11e4da-7767-4f1d-aabb-1ef9d06572e7
           orderKey: a0
-    properties: {}
+        - nodeID: db5bc295-2767-4324-a37f-8a55905c4163
+          orderKey: a2
+    properties:
+      gridColumnGap: '16'
+  e7cc432e-d22e-4ff4-b450-49d6618fb8d6:
+    type: FUNCTION
+    name: top7TrendingData
+    properties:
+      callingSemantics: REACTIVE
+      action:
+        path: search/trending
+        body: ''
+        headers: []
+        method: GET
+        bodyType: application/json
+        targetNode:
+          ref: f13c5b2a-d767-4f53-85a5-0ade977a6af9
+        actionType: PERFORM_REQUEST
+      onSuccess: ''
+      onFailure: ''
+  f13c5b2a-d767-4f53-85a5-0ade977a6af9:
+    type: RESOURCE/HTTP
+    name: coingeckoAPI
+    properties:
+      baseURL: https://api.coingecko.com/api/v3/
+      method: GET
+      headers: []
+      bodyType: application/json
+      path: ''
   f4e0ef11-7e8a-4d85-ba8a-a8b837a91770:
-    id: f4e0ef11-7e8a-4d85-ba8a-a8b837a91770
     type: CHART
     name: externalData
-    parentNodeID: 4bcf5507-5e0e-4570-a4c1-b4b819f35624
-    parentSlot: canvas
     properties:
       width: '12'
       height: '28'
@@ -304,71 +324,3 @@ nodes:
       yAxis2Type: '-'
       xKey: id
       rightVerticalAxisTitle: BTC price
-  e7cc432e-d22e-4ff4-b450-49d6618fb8d6:
-    id: e7cc432e-d22e-4ff4-b450-49d6618fb8d6
-    type: FUNCTION
-    name: top7TrendingData
-    parentNodeID: 4bcf5507-5e0e-4570-a4c1-b4b819f35624
-    parentSlot: functions
-    properties:
-      callingSemantics: REACTIVE
-      action:
-        path: search/trending
-        body: ''
-        headers: []
-        method: GET
-        bodyType: application/json
-        targetNode:
-          ref: f13c5b2a-d767-4f53-85a5-0ade977a6af9
-        actionType: PERFORM_REQUEST
-      onSuccess: ''
-      onFailure: ''
-  7c907d8f-53f8-4454-af2e-a63df9aac41e:
-    id: 7c907d8f-53f8-4454-af2e-a63df9aac41e
-    type: TEXT
-    name: title
-    parentNodeID: de7d111f-c668-44d1-9669-b4bcd1edae82
-    parentSlot: canvas
-    properties:
-      top: '5'
-      left: '4'
-      width: '3'
-      height: '3'
-      overflow: auto
-      value: Charts
-      fontSize: 4xl
-      verticalAlign: center
-      fontWeight: bold
-  ca46183a-20ce-438d-8ada-1ed1b4d2526f:
-    id: ca46183a-20ce-438d-8ada-1ed1b4d2526f
-    type: TEXT
-    name: desc
-    parentNodeID: de7d111f-c668-44d1-9669-b4bcd1edae82
-    parentSlot: canvas
-    properties:
-      top: '8'
-      left: '4'
-      width: '6'
-      height: '4'
-      overflow: auto
-      value: >-
-        A powerful and flexible way to visualize your data. Connect to your data
-        source and customize the chart types (line, bar, scatters, etc.)
-      renderMode: markdown
-      verticalAlign: center
-      fontWeight: '500'
-  9f11e4da-7767-4f1d-aabb-1ef9d06572e7:
-    id: 9f11e4da-7767-4f1d-aabb-1ef9d06572e7
-    type: FUNCTION
-    name: linkToCoingeckoChart
-    parentNodeID: de7d111f-c668-44d1-9669-b4bcd1edae82
-    parentSlot: functions
-    properties:
-      action:
-        path: /coingeckoTrendingCoinsChart
-        target: _self
-        targetNode:
-          ref: 3db1136c-7787-4622-9ae1-415de88ceef2
-        actionType: NAVIGATE_TO_PAGE
-      onSuccess: ''
-      onFailure: ''
