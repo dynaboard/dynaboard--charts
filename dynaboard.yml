@@ -1,4 +1,4 @@
-runtimeVersion: 0.3.0
+runtimeVersion: 0.3.4
 name: Charts
 description: Chart node usage examples
 type: com.dynaboard/project
@@ -8,17 +8,13 @@ nodes:
     name: ROOT_NODE
     slots:
       resources:
-        - nodeID: 3db1136c-7787-4622-9ae1-415de88ceef2
-          orderKey: a0
         - nodeID: f13c5b2a-d767-4f53-85a5-0ade977a6af9
           orderKey: a3
+        - nodeID: 15e50717-4383-4bf6-ad17-c41df75dc905
+          orderKey: a4
       pages:
         - nodeID: de7d111f-c668-44d1-9669-b4bcd1edae82
           orderKey: aH
-        - nodeID: dbec5046-2d2b-4c0f-a28e-fc03c07b5f0c
-          orderKey: aHV
-        - nodeID: 4bcf5507-5e0e-4570-a4c1-b4b819f35624
-          orderKey: aHl
     properties:
       metaTags:
         - key: ''
@@ -27,71 +23,116 @@ nodes:
       robotsTxt: '{{ JSON.parse(''null'') }}'
       timezone: America
       languages: []
-  369e8f70-8152-4f56-b372-2d7a0ad1fef0:
-    type: BUTTON
-    name: coingeckoChartButton
+  08c2898c-54b4-4634-aa63-1a8a313f93d3:
+    type: CHART
+    name: externalDataChart
     properties:
-      top: '13'
-      left: '7'
-      width: '3'
-      height: '5'
-      text: coingecko chart
-      leftIcon: ''
-      rightIcon: ''
-      fontSize: 2xl
-      backgroundColor: red.300
-      onClick:
-        function:
-          ref: 9f11e4da-7767-4f1d-aabb-1ef9d06572e7
-  3db1136c-7787-4622-9ae1-415de88ceef2:
-    type: RESOURCE/BROWSER
-    name: internalLink
-  48afa67d-8b4d-4c20-a4a0-994ff7b734e9:
-    type: BUTTON
-    name: basicChartsButton
+      width: '12'
+      height: '28'
+      title: Bitcoin Price (last 24 hours)
+      dataSource: '{{transformedCoingeckoMarketData.data}}'
+      dimensions:
+        - key: Untitled Dimension 2
+          id: 003312ab-f0b2-4d0c-a5a3-098be9902837
+          yKey: marketCap
+          markerColor: yellow.400
+          type: line
+          lineShape: linear
+          name: Market Cap
+          side: left
+          mode: lines
+        - key: Untitled Dimension 2
+          id: e90460a5-3e93-4a08-9ba9-e0fb7ecf0dfd
+          yKey: price
+          mode: lines
+          lineShape: spline
+          markerColor: purple.500
+          side: right
+          type: line
+          name: Price
+      allowLegend: '{{true}}'
+      markerColor: hsla(0, 29%, 59%, 1)
+      chartMode: lines
+      allowTooltip: '{{false}}'
+      xAxisType: '-'
+      yAxisType: '-'
+      allowHovermode: '{{false}}'
+      legendOrientation: h
+      axes: []
+      traces: []
+      chartOrientation: v
+      horizontalValues: id
+      yAxis2Type: '-'
+      xKey: date
+      rightVerticalAxisTitle: BTC price
+      top: '43'
+      horizontalAxisType: date
+      rightVerticalAxisType: linear
+      isInteractive: true
+      leftVerticalAxisTitle: Market Cap
+      horizontalAxisTitle: Date
+  15e50717-4383-4bf6-ad17-c41df75dc905:
+    type: RESOURCE/TYPESCRIPT_CLIENT
+    name: typescriptClient1
+  4329e739-a194-421d-9e4c-e5aecf28faf5:
+    type: FUNCTION
+    name: coingeckoMarketData
     properties:
-      top: '13'
-      left: '4'
-      width: '3'
-      height: '5'
-      text: basic chart
-      leftIcon: ''
-      rightIcon: ''
-      fontSize: 2xl
-      backgroundColor: purple.300
-      onClick:
-        function:
-          ref: db5bc295-2767-4324-a37f-8a55905c4163
-  4bcf5507-5e0e-4570-a4c1-b4b819f35624:
-    type: PAGE
-    name: coingeckoTrendingCoinsChart
-    slots:
-      canvas:
-        - nodeID: f4e0ef11-7e8a-4d85-ba8a-a8b837a91770
-          orderKey: a0
-      functions:
-        - nodeID: e7cc432e-d22e-4ff4-b450-49d6618fb8d6
-          orderKey: a0
+      callingSemantics: REACTIVE
+      action:
+        path: coins/bitcoin/market_chart?vs_currency=USD&days=1
+        body: ''
+        headers: []
+        method: GET
+        bodyType: application/json
+        targetNode:
+          ref: f13c5b2a-d767-4f53-85a5-0ade977a6af9
+        actionType: PERFORM_REQUEST
+      onSuccess: ''
+      onFailure: ''
   7c907d8f-53f8-4454-af2e-a63df9aac41e:
     type: TEXT
     name: title
     properties:
-      top: '5'
-      left: '4'
-      width: '3'
+      width: '12'
       height: '3'
       overflow: auto
       value: Charts
       fontSize: 4xl
-      verticalAlign: center
       fontWeight: bold
-  817fd7d0-615a-410a-b3b5-34691ac615d5:
+  832e23d0-47c2-4537-afd1-ae828a6be9a3:
+    type: FUNCTION
+    name: transformedCoingeckoMarketData
+    properties:
+      action:
+        code: |-
+          const MS_PER_MINUTE = 60000
+          const now = new Date()
+          const result: any[] = []
+          const data = {{ coingeckoMarketData.data }}
+          for (let i = 0; i < data.prices.length; i++) {
+            for (let j = 0; j < 2; j++) {
+              const price = data.prices[i][j]
+              const marketCap = data.market_caps[i][j]
+              const totalVolume = data.total_volumes[i][j]
+              const date = new Date(now.valueOf() - i * 5 * MS_PER_MINUTE)
+
+              result.push({ date, price, marketCap, totalVolume })
+            }
+          }
+
+          return result
+        targetNode:
+          ref: 15e50717-4383-4bf6-ad17-c41df75dc905
+        actionType: CALL_CLIENT_FUNCTION
+      callingSemantics: REACTIVE
+  9d878908-bfb6-4a38-8c7b-55a324ae7ed3:
     type: CHART
     name: basicChart
     properties:
       width: '12'
       height: '32'
-      title: basic chart
+      title: Line Chart with Static Data
       dataSource: |-
         {{[
           {
@@ -192,135 +233,51 @@ nodes:
       chartOrientation: v
       traceName: trace 1 name
       yAxis2Type: '-'
-  9f11e4da-7767-4f1d-aabb-1ef9d06572e7:
-    type: FUNCTION
-    name: linkToCoingeckoChart
-    properties:
-      action:
-        path: /coingeckoTrendingCoinsChart
-        target: _self
-        targetNode:
-          ref: 3db1136c-7787-4622-9ae1-415de88ceef2
-        actionType: NAVIGATE_TO_PAGE
-      onSuccess: ''
-      onFailure: ''
+      top: '9'
   ca46183a-20ce-438d-8ada-1ed1b4d2526f:
     type: TEXT
     name: desc
     properties:
-      top: '8'
-      left: '4'
-      width: '6'
+      top: '4'
+      width: '12'
       height: '4'
       overflow: auto
       value: >-
-        A powerful and flexible way to visualize your data. Connect to your data
-        source and customize the chart types (line, bar, scatters, etc.)
+        A **powerful** and *flexible* way to visualize your data.
+
+
+        Connect to your data source and customize the chart types (line, bar,
+        scatters, etc.)
       renderMode: markdown
-      verticalAlign: center
       fontWeight: '500'
-  db5bc295-2767-4324-a37f-8a55905c4163:
-    type: FUNCTION
-    name: linkToBasicChart
-    properties:
-      action:
-        path: /basicChart
-        target: _self
-        targetNode:
-          ref: 3db1136c-7787-4622-9ae1-415de88ceef2
-        actionType: NAVIGATE_TO_PAGE
-      onSuccess: ''
-      onFailure: ''
-  dbec5046-2d2b-4c0f-a28e-fc03c07b5f0c:
-    type: PAGE
-    name: basicChart
-    slots:
-      canvas:
-        - nodeID: 817fd7d0-615a-410a-b3b5-34691ac615d5
-          orderKey: a0
   de7d111f-c668-44d1-9669-b4bcd1edae82:
     type: PAGE
     name: index
     slots:
       canvas:
-        - nodeID: 369e8f70-8152-4f56-b372-2d7a0ad1fef0
-          orderKey: a1
-        - nodeID: 48afa67d-8b4d-4c20-a4a0-994ff7b734e9
-          orderKey: a2
-        - nodeID: ca46183a-20ce-438d-8ada-1ed1b4d2526f
-          orderKey: a2V
         - nodeID: 7c907d8f-53f8-4454-af2e-a63df9aac41e
-          orderKey: a3
-      functions:
-        - nodeID: 9f11e4da-7767-4f1d-aabb-1ef9d06572e7
+          orderKey: Zz
+        - nodeID: ca46183a-20ce-438d-8ada-1ed1b4d2526f
+          orderKey: ZzV
+        - nodeID: 9d878908-bfb6-4a38-8c7b-55a324ae7ed3
           orderKey: a0
-        - nodeID: db5bc295-2767-4324-a37f-8a55905c4163
-          orderKey: a2
+        - nodeID: 08c2898c-54b4-4634-aa63-1a8a313f93d3
+          orderKey: a1
+      functions:
+        - nodeID: 4329e739-a194-421d-9e4c-e5aecf28faf5
+          orderKey: Zy
+        - nodeID: 832e23d0-47c2-4537-afd1-ae828a6be9a3
+          orderKey: a0
     properties:
       gridColumnGap: '16'
-  e7cc432e-d22e-4ff4-b450-49d6618fb8d6:
-    type: FUNCTION
-    name: top7TrendingData
-    properties:
-      callingSemantics: REACTIVE
-      action:
-        path: search/trending
-        body: ''
-        headers: []
-        method: GET
-        bodyType: application/json
-        targetNode:
-          ref: f13c5b2a-d767-4f53-85a5-0ade977a6af9
-        actionType: PERFORM_REQUEST
-      onSuccess: ''
-      onFailure: ''
   f13c5b2a-d767-4f53-85a5-0ade977a6af9:
     type: RESOURCE/HTTP
     name: coingeckoAPI
     properties:
-      baseURL: https://api.coingecko.com/api/v3/
       method: GET
-      headers: []
       bodyType: application/json
       path: ''
-  f4e0ef11-7e8a-4d85-ba8a-a8b837a91770:
-    type: CHART
-    name: externalData
-    properties:
-      width: '12'
-      height: '28'
-      title: Top 7 Trending Coins from CoinGecko
-      dataSource: '{{top7TrendingData?.data?.coins.map(i => i.item)}}'
-      dimensions:
-        - key: Untitled Dimension 1
-          id: 4b56137a-9e0e-4c22-a110-d1627ecfe18a
-          name: market cap
-          side: left
-          yKey: market_cap_rank
-          type: line
-          mode: lines+markers
-          markerColor: green.700
-          lineShape: linear
-        - key: Untitled Dimension 2
-          id: 003312ab-f0b2-4d0c-a5a3-098be9902837
-          name: btc
-          side: right
-          yKey: price_btc
-          type: scatter
-          mode: lines+markers
-          markerColor: yellow.400
-      allowLegend: '{{true}}'
-      markerColor: hsla(0, 29%, 59%, 1)
-      chartMode: lines
-      allowTooltip: '{{false}}'
-      xAxisType: '-'
-      yAxisType: '-'
-      allowHovermode: '{{false}}'
-      legendOrientation: h
-      axes: []
-      traces: []
-      chartOrientation: v
-      horizontalValues: id
-      yAxis2Type: '-'
-      xKey: id
-      rightVerticalAxisTitle: BTC price
+      profiles:
+        - environment: ''
+          baseURL: https://api.coingecko.com/api/v3/
+          headers: []
