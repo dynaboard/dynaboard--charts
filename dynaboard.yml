@@ -28,28 +28,28 @@ nodes:
     name: externalDataChart
     properties:
       width: '12'
-      height: '28'
-      title: Bitcoin Price (last 24 hours)
+      height: '27'
+      title: '{{_.startCase(dropdown1.value)}} Price (last 24 hours)'
       dataSource: '{{transformedCoingeckoMarketData.data}}'
       dimensions:
         - key: Untitled Dimension 2
-          id: 003312ab-f0b2-4d0c-a5a3-098be9902837
-          yKey: marketCap
-          markerColor: yellow.400
-          type: line
-          lineShape: linear
-          name: Market Cap
-          side: left
-          mode: lines
-        - key: Untitled Dimension 2
           id: e90460a5-3e93-4a08-9ba9-e0fb7ecf0dfd
+          name: Price
+          side: left
           yKey: price
+          type: line
           mode: lines
           lineShape: spline
           markerColor: purple.500
+        - key: Untitled Dimension 2
+          id: 003312ab-f0b2-4d0c-a5a3-098be9902837
+          name: Total Volume
           side: right
+          yKey: totalVolume
           type: line
-          name: Price
+          mode: lines
+          lineShape: linear
+          markerColor: yellow.400
       allowLegend: '{{true}}'
       markerColor: hsla(0, 29%, 59%, 1)
       chartMode: lines
@@ -64,13 +64,24 @@ nodes:
       horizontalValues: id
       yAxis2Type: '-'
       xKey: date
-      rightVerticalAxisTitle: BTC price
-      top: '43'
+      rightVerticalAxisTitle: Total Volume (USD)
+      top: '46'
       horizontalAxisType: date
-      rightVerticalAxisType: linear
       isInteractive: true
-      leftVerticalAxisTitle: Market Cap
+      leftVerticalAxisTitle: '{{_.startCase(dropdown1.value)}} Price (USD)'
       horizontalAxisTitle: Date
+  0f375527-a2ec-4e55-9520-3ba4a99b9ef1:
+    type: DROPDOWN
+    name: dropdown1
+    properties:
+      top: '42'
+      left: '10'
+      width: '3'
+      height: '4'
+      label: Select a coin
+      values: '{{[''bitcoin'', ''ethereum'', ''dogecoin'', ''ripple'']}}'
+      displayValues: '{{dropdown1.values.map((s) => _.startCase(s))}}'
+      value: bitcoin
   15e50717-4383-4bf6-ad17-c41df75dc905:
     type: RESOURCE/TYPESCRIPT_CLIENT
     name: typescriptClient1
@@ -80,7 +91,7 @@ nodes:
     properties:
       callingSemantics: REACTIVE
       action:
-        path: coins/bitcoin/market_chart?vs_currency=USD&days=1
+        path: coins/{{dropdown1.value}}/market_chart?vs_currency=USD&days=1
         body: ''
         headers: []
         method: GET
@@ -111,14 +122,12 @@ nodes:
           const result: any[] = []
           const data = {{ coingeckoMarketData.data }}
           for (let i = 0; i < data.prices.length; i++) {
-            for (let j = 0; j < 2; j++) {
-              const price = data.prices[i][j]
-              const marketCap = data.market_caps[i][j]
-              const totalVolume = data.total_volumes[i][j]
-              const date = new Date(now.valueOf() - i * 5 * MS_PER_MINUTE)
+            const price = data.prices[i][1]
+            const marketCap = data.market_caps[i][1]
+            const totalVolume = data.total_volumes[i][1]
+            const date = new Date(now.valueOf() - i * 5 * MS_PER_MINUTE)
 
-              result.push({ date, price, marketCap, totalVolume })
-            }
+            result.push({ date, price, marketCap, totalVolume })
           }
 
           return result
@@ -255,6 +264,8 @@ nodes:
     name: index
     slots:
       canvas:
+        - nodeID: 0f375527-a2ec-4e55-9520-3ba4a99b9ef1
+          orderKey: Zy
         - nodeID: 7c907d8f-53f8-4454-af2e-a63df9aac41e
           orderKey: Zz
         - nodeID: ca46183a-20ce-438d-8ada-1ed1b4d2526f
