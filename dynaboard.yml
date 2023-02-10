@@ -1,4 +1,4 @@
-runtimeVersion: 0.3.4
+runtimeVersion: 0.3.5
 name: Charts
 description: Chart node usage examples
 type: com.dynaboard/project
@@ -82,6 +82,7 @@ nodes:
       values: '{{[''bitcoin'', ''ethereum'', ''dogecoin'', ''ripple'']}}'
       displayValues: '{{dropdown1.values.map((s) => _.startCase(s))}}'
       value: bitcoin
+      labelStyle: top
   15e50717-4383-4bf6-ad17-c41df75dc905:
     type: RESOURCE/TYPESCRIPT_CLIENT
     name: typescriptClient1
