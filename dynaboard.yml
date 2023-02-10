@@ -1,4 +1,4 @@
-runtimeVersion: 0.3.4
+runtimeVersion: 0.3.5
 name: Charts
 description: Chart node usage examples
 type: com.dynaboard/project
@@ -15,6 +15,8 @@ nodes:
       pages:
         - nodeID: de7d111f-c668-44d1-9669-b4bcd1edae82
           orderKey: aH
+        - nodeID: 7239658b-aee1-4b2e-93c0-8bf2844ad78d
+          orderKey: aI
     properties:
       metaTags:
         - key: ''
@@ -82,6 +84,7 @@ nodes:
       values: '{{[''bitcoin'', ''ethereum'', ''dogecoin'', ''ripple'']}}'
       displayValues: '{{dropdown1.values.map((s) => _.startCase(s))}}'
       value: bitcoin
+      labelStyle: top
   15e50717-4383-4bf6-ad17-c41df75dc905:
     type: RESOURCE/TYPESCRIPT_CLIENT
     name: typescriptClient1
@@ -101,6 +104,21 @@ nodes:
         actionType: PERFORM_REQUEST
       onSuccess: ''
       onFailure: ''
+  7239658b-aee1-4b2e-93c0-8bf2844ad78d:
+    type: PAGE
+    name: page1
+    properties:
+      authorizationRules: |-
+        [
+          {
+            if: {
+              $and: [],
+            },
+            then: {
+              allow: true,
+            },
+          },
+        ]
   7c907d8f-53f8-4454-af2e-a63df9aac41e:
     type: TEXT
     name: title
