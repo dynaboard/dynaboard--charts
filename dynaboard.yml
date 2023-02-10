@@ -65,7 +65,7 @@ nodes:
       yAxis2Type: '-'
       xKey: date
       rightVerticalAxisTitle: Total Volume (USD)
-      top: '46'
+      top: '36'
       horizontalAxisType: date
       isInteractive: true
       leftVerticalAxisTitle: '{{_.startCase(dropdown1.value)}} Price (USD)'
@@ -74,7 +74,7 @@ nodes:
     type: DROPDOWN
     name: dropdown1
     properties:
-      top: '42'
+      top: '32'
       left: '10'
       width: '3'
       height: '4'
@@ -141,7 +141,7 @@ nodes:
     name: basicChart
     properties:
       width: '12'
-      height: '32'
+      height: '22'
       title: Line Chart with Static Data
       dataSource: |-
         {{[
