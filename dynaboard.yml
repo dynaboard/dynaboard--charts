@@ -250,7 +250,7 @@ nodes:
     properties:
       top: '4'
       width: '12'
-      height: '4'
+      height: '5'
       overflow: auto
       value: >-
         A **powerful** and *flexible* way to visualize your data.
