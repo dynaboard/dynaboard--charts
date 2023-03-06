@@ -1,4 +1,4 @@
-runtimeVersion: 0.3.5
+runtimeVersion: 0.4.0
 name: Charts
 description: Chart node usage examples
 type: com.dynaboard/project
@@ -29,7 +29,7 @@ nodes:
     properties:
       width: '12'
       height: '27'
-      title: '{{_.startCase(dropdown1.value)}} Price (last 24 hours)'
+      title: '{{_.startCase(coinDropdown.value)}} Price (last 24 hours)'
       dataSource: '{{transformedCoingeckoMarketData.data}}'
       dimensions:
         - key: Untitled Dimension 2
@@ -67,21 +67,27 @@ nodes:
       rightVerticalAxisTitle: Total Volume (USD)
       top: '36'
       horizontalAxisType: date
-      isInteractive: true
-      leftVerticalAxisTitle: '{{_.startCase(dropdown1.value)}} Price (USD)'
+      leftVerticalAxisTitle: '{{_.startCase(coinDropdown.value)}} Price (USD)'
       horizontalAxisTitle: Date
   0f375527-a2ec-4e55-9520-3ba4a99b9ef1:
     type: DROPDOWN
-    name: dropdown1
+    name: coinDropdown
     properties:
+      isVisible: '{{true}}'
+      isEnabled: '{{true}}'
       top: '32'
       left: '10'
       width: '3'
       height: '4'
       label: Select a coin
       values: '{{[''bitcoin'', ''ethereum'', ''dogecoin'', ''ripple'']}}'
-      displayValues: '{{dropdown1.values.map((s) => _.startCase(s))}}'
+      displayValues: '{{ coinDropdown.values.map((s) => _.startCase(s)) }}'
       value: bitcoin
+      enableFilter: '{{false}}'
+      fuzzyMatching: '{{true}}'
+      caseSensitiveMatching: '{{false}}'
+      isRequired: '{{false}}'
+      allowClearing: '{{true}}'
       labelStyle: top
   15e50717-4383-4bf6-ad17-c41df75dc905:
     type: RESOURCE/TYPESCRIPT_CLIENT
@@ -92,7 +98,7 @@ nodes:
     properties:
       callingSemantics: REACTIVE
       action:
-        path: coins/{{dropdown1.value}}/market_chart?vs_currency=USD&days=1
+        path: coins/{{coinDropdown.value}}/market_chart?vs_currency=USD&days=1
         body: ''
         headers: []
         method: GET
@@ -116,6 +122,8 @@ nodes:
     type: FUNCTION
     name: transformedCoingeckoMarketData
     properties:
+      isEnabled: '{{true}}'
+      loading: '{{false}}'
       action:
         code: |-
           const MS_PER_MINUTE = 60000
@@ -136,6 +144,7 @@ nodes:
           ref: 15e50717-4383-4bf6-ad17-c41df75dc905
         actionType: CALL_CLIENT_FUNCTION
       callingSemantics: REACTIVE
+      runOnPageLoad: '{{false}}'
   9d878908-bfb6-4a38-8c7b-55a324ae7ed3:
     type: CHART
     name: basicChart
@@ -268,11 +277,11 @@ nodes:
         - nodeID: 0f375527-a2ec-4e55-9520-3ba4a99b9ef1
           orderKey: Zy
         - nodeID: 7c907d8f-53f8-4454-af2e-a63df9aac41e
-          orderKey: Zz
+          orderKey: Zx
         - nodeID: ca46183a-20ce-438d-8ada-1ed1b4d2526f
-          orderKey: ZzV
+          orderKey: ZxV
         - nodeID: 9d878908-bfb6-4a38-8c7b-55a324ae7ed3
-          orderKey: a0
+          orderKey: Zxl
         - nodeID: 08c2898c-54b4-4634-aa63-1a8a313f93d3
           orderKey: a1
       functions:
@@ -282,6 +291,10 @@ nodes:
           orderKey: a0
     properties:
       gridColumnGap: '16'
+      headerProps: {}
+      leftSidebarProps: {}
+      rightSidebarProps: {}
+      footerProps: {}
   f13c5b2a-d767-4f53-85a5-0ade977a6af9:
     type: RESOURCE/HTTP
     name: coingeckoAPI
